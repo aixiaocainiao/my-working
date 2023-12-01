@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/home/xinyue/my_working/devel -DCMAKE_INSTALL_PREFIX=/home/xinyue/my_working/install -G Unix Makefiles
