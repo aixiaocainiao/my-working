@@ -10,7 +10,8 @@
         "/home/xinyue/rewrite_fitting/devel/include/**",
         "/home/xinyue/my_working/src/cpp_file/include/**",
         "/home/xinyue/rewrite_fitting/src/crush_ws/include/**",
-        "/usr/include/**"
+        "/usr/include/**",
+        "/home/xinyue/my_working/src/cpp_file/数据结构/队列/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",

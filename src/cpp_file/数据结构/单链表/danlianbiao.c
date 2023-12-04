@@ -279,28 +279,42 @@ linklist list_free(linklist H)
  
 }
 //链表翻转的程序
-linklist reseze(linklist H)
+int list_reverse(linklist H)
 {
-    linklist p,q,r;
+    linklist p,q;
     if(H == NULL){
         printf("H is NULL\n");
-        return NULL;
+        return -1;
     }
     if(H->next == NULL || H->next->next == NULL){
         printf("没有翻转的必要性\n");
-        return NULL;
+        return -1;
     }
-    p = H->next;
-    q = H->next->next;
-    p->next = NULL;
-    while (q->next != NULL)
+
+    p = H->next->next;
+    H->next->next = NULL;
+
+    while (p != NULL)
     {
         /* code */
+        q = p;
+        p = p->next;
         q->next = H->next;
         H->next = q;
-        q = q->next;
     }
-    return H;
+    
+
+    // p = H->next;
+    // q = H->next->next;
+    // p->next = NULL;
+    // while (q->next != NULL)
+    // {
+    //     /* code */
+    //     q->next = H->next;
+    //     H->next = q;
+    //     q = q->next;
+    // }
+    return 0;
 }
 /*
     链表求相邻两节点的相加最大值的前一个节点的指针
@@ -312,6 +326,7 @@ linklist reseze(linklist H)
         
     
 */
+//自己写的太稚嫩了
 linklist obj_max(linklist H)
 {
     if(H == NULL){
@@ -325,40 +340,70 @@ linklist obj_max(linklist H)
         i++;
         p = p->next;
     }
+    if(i == 0){
+
+        printf("H is Null\n");
+        return NULL;
+    }
+    if(i == 1){
+        printf("只有一个头节点");
+        return NULL;
+    }
+    
     printf("i = %d\n",i);
-    if(i > 1 && i <= 2){
+    if(i == 2){
         printf("只有一个头结点和一个数据");
         return NULL;
     }
-    if(i > 2 && i <= 3){
+    if(i == 3){
         printf("一共两个数据位加一个头\n");
         //直接返回就行
         return H->next;
     }
+    //重新赋值
     p = H->next;
     linklist q = p->next;
     printf("q: = %d\n",q->data);
     linklist ret;
     int temp = 0,data = 0;
     if(i > 3){
-        while (q->next != NULL)
+        while (q != NULL)
         {
-            
-            data = q->data + p->data;
+            data = p->data + q->data;
             if(data > temp){
                 temp = data;
                 ret = p;
             }
-            q = q->next;
-            p = q->next;
 
-            
+            p = p->next;
+            q = q->next;
         }
         printf("ret: = %d\n",ret->data);
-
         return ret;
+        
 
     }
+
+
+    // if(i > 3){
+    //     while (q->next != NULL)
+    //     {
+            
+    //         data = q->data + p->data;
+    //         if(data > temp){
+    //             temp = data;
+    //             ret = p;
+    //         }
+    //         q = q->next;
+    //         p = q->next;
+
+            
+    //     }
+    //     printf("ret: = %d\n",ret->data);
+
+    //     return ret;
+
+    // }
 
 
 
@@ -391,10 +436,100 @@ linklist list_agjmax(linklist H)
     return r;
 
 }
+/*
+    h1 拼接后的链表  
+*/
+linklist list_mege(linklist H1,linklist H2)
+{
+    //主函数可以判断是否为空  这里只进行数据整理
+#if 0
+    linklist p,q,r,tem;
+    p = H1->next;
+    H1->next = NULL;
+    tem = H1;
+    q = H2->next;
+    H2->next = NULL;
+    while (p != NULL && q != NULL)
+    {
+        if(p->data >= q->data)
+        {
+            r = q;
+            q = q->next;
+            r->next = NULL;
+            tem->next = r;
+            tem = tem->next;
+
+        }
+        else{
+
+            r = p;
+            p = p->next;
+            r->next = NULL;
+            tem->next = r;
+            tem= tem->next;
+        } 
+    }
+    if(p == NULL){
+        tem->next = q;
+
+    }
+    else{
+        tem->next = p;
+    }
+    return H1;
+    
+#endif
+}
+int list_empty(linklist H)
+{
+    if(H->next != NULL || H != NULL){
+        return 0;
+    }
+}
+int test_merge()
+{
+    int ah[] = {2,4,6,7,8,9};
+    int sh[] = {1,4,5,7};
+    linklist H1 = list_create();
+    linklist H2 = list_create();
+    if(H1 == NULL){
+        printf("H is NULL");
+        return -1;
+    }
+    if(H2 == NULL){
+        printf("H is NULL");
+        return -1;
+    }
+    for(int i = 0;i < sizeof(ah)/sizeof(int);i++)
+    {
+        list_tail_insert(H1,ah[i]);
+    }
+    for(int j = 0;j < sizeof(sh)/sizeof(int);j++)
+    {
+        list_tail_insert(H2,sh[j]);
+    }
+
+    list_show(H1);
+    list_show(H2);
+    linklist H ;
+    if(!list_empty(H1) & !list_empty(H2)){
+        H = list_mege(H1,H2);
+    }
+    list_show(H);
+
+
+
+
+}
+/*不涉及到指针的释放和malloc动态分配*/
 linklist list_merge(linklist H1,linklist H2)
 {
     linklist p,q,r;
-    
+    if(H1 == NULL || H2 == NULL){
+        printf("H1 or H2 is NULL\n");
+        return NULL;
+    }
+    //应该有好多情况呢  确保进来的是两个好的链表
     p = H1->next;
     H1->next = NULL;
     r = H1;//首地址是H  所以H1 是H1和H2合并之后的链表  
@@ -467,38 +602,7 @@ linklist list_merge(linklist H1,linklist H2)
     
 #endif
 }
-int test_merge()
-{
-    int ah[] = {2,4,6,8};
-    int sh[] = {1,3,5,7};
-    linklist H1 = list_create();
-    linklist H2 = list_create();
-    if(H1 == NULL){
-        printf("H is NULL");
-        return -1;
-    }
-    if(H2 == NULL){
-        printf("H is NULL");
-        return -1;
-    }
-    for(int i = 0;i < sizeof(ah)/sizeof(int);i++)
-    {
-        list_tail_insert(H1,ah[i]);
-    }
-    for(int j = 0;j < sizeof(sh)/sizeof(int);j++)
-    {
-        list_tail_insert(H2,sh[j]);
-    }
 
-    list_show(H1);
-    list_show(H2);
-    linklist H = list_merge(H1,H2);
-    list_show(H);
-
-
-
-
-}
 /*
     实现单链表的翻转 
         思路: H 2 4 6  8 
@@ -624,8 +728,10 @@ int test05()
     }
     list_show(H);
 
-    // linklist ret = obj_max(H);
-    H = reseze(H);
+    linklist ret = obj_max(H);
+    printf("ret:Value = %d\n",ret->data);
+
+    // H = reseze(H);
     list_show(H);
     // printf("ret:Value = %d\n",ret->data);
 

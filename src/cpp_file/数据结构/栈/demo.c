@@ -1,3 +1,7 @@
+/*
+    栈  
+        顺序栈的实现
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -93,12 +97,13 @@ int stack_empty(sqstack* ss)
     if (ss->top == -1)
     {
         /* code */
-        printf("栈为空\n");
+        // printf("栈为空\n");
+        return 0;
     }
     else{
-        printf("栈不为空");
+        // printf("栈不为空");
+        return 1;
     }
-    return 0;
 
 }
 
@@ -182,12 +187,19 @@ int main(int argc, char const *argv[])
         stack_push(ss,ah[i]);
 
     }
-    for(int i = 0;i < sizeof(ah)/sizeof(int);i++)
+
+    while (stack_empty(ss))
     {
-        temp = stack_pop(ss);
-        printf("value = %d\n",temp);
+        /* code */
+        printf("pop: %d \n",stack_pop(ss));
     }
     
+    // for(int i = 0;i < sizeof(ah)/sizeof(int);i++)
+    // {
+    //     temp = stack_pop(ss);
+    //     printf("value = %d\n",temp);
+    // }
+    stack_free(ss);
 
     
     return 0;
